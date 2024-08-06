@@ -89,6 +89,7 @@ const server = http.createServer((request, response) => {
     } else if (path.toLocaleLowerCase() === '/contact'){
         response.end(html.replace('{{%CONTENT%}}', 'Youre in Contact page'))
     } else if(path.toLocaleLowerCase() === '/products'){
+        // response for request to just products
         if(!query.id){
             let productHtmlArray = products.map((prod)=>{
                 return replaceHtml(productListHtml, prod)
@@ -97,10 +98,11 @@ const server = http.createServer((request, response) => {
         response.writeHead(200, {'Content-Type': 'text/html'})
         response.end(productResponseHtml)
         //console.log(productHtmlArray.join(','))
+        // response for when single product is clicked
         } else {
-           let prod = products[query.id]
-           let productDetailResponseHtml = replaceHtml(productDetailHtml, prod)
-           response.end(html.replace('{{%CONTENT%}}', productDetailResponseHtml))
+            let prod = products[query.id]
+            let productDetailResponseHtml = replaceHtml(productDetailHtml, prod)
+            response.end(html.replace('{{%CONTENT%}}', productDetailResponseHtml))
         }
         
     } else {
