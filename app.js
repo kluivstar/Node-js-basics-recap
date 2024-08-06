@@ -75,6 +75,7 @@ let productDetailHtml = fs.readFileSync('./Template/product-details.html', 'utf-
     //return output
 //}
 /// Step 1: Create A Server
+/*
 const server = http.createServer((request, response) => {
     let {query, pathname: path} = url.parse(request.url, true)
     if (path === '/' || path === '/home'){
@@ -112,8 +113,45 @@ const server = http.createServer((request, response) => {
     }
     
     //console.log(response)
-})
+}) */
 
+const server = http.createServer()
+server.on('request', (request, response)=>{
+    let {query, pathname: path} = url.parse(request.url, true)
+    if (path === '/' || path === '/home'){
+        response.writeHead(200, {'Content-Type': 'text-html',
+            'my-header': 'Hello, world.'
+        })
+        response.end(html.replace('{{%CONTENT%}}', "Youre Home"))
+    } else if (path.toLocaleLowerCase() === '/about'){
+        response.writeHead(200, {'Content-Type': 'text-html',
+            'my-header': 'Hello, world'
+        })
+        response.end(html.replace('{{%CONTENT%}}', 'Youre in About page'))
+    } else if (path.toLocaleLowerCase() === '/contact'){
+        response.end(html.replace('{{%CONTENT%}}', 'Youre in Contact page'))
+    } else if(path.toLocaleLowerCase() === '/products'){
+        // response for request to just products
+        if(!query.id){
+            let productHtmlArray = products.map((prod)=>{
+                return replaceHtml(productListHtml, prod)
+            })
+            let productResponseHtml = html.replace('{{%CONTENT%}}', productHtmlArray.join(','))
+        response.writeHead(200, {'Content-Type': 'text/html'})
+        response.end(productResponseHtml)
+        //console.log(productHtmlArray.join(','))
+        // response for when single product is clicked
+        } else {
+            let prod = products[query.id]
+            let productDetailResponseHtml = replaceHtml(productDetailHtml, prod)
+            response.end(html.replace('{{%CONTENT%}}', productDetailResponseHtml))
+        }
+        
+    } else {
+        response.writeHead(404)
+        response.end(html.replace('{{%CONTENT%}}', '404: E no dey.'))
+    }
+})
 // Step 2: Start the server
 server.listen(8000, '127.0.0.1', () => {
     console.log("Server wanna be startin something....")
