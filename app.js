@@ -2,6 +2,7 @@ const readline = require("readline")
 const fs = require("fs")
 const http = require('http')
 const url = require("url")
+const replaceHtml = require('./Modules/replaceHtml')
 /*
 Lecture 4:
 READING INPUT AND WRITING OUTPUT
@@ -59,20 +60,20 @@ let products = JSON.parse(fs.readFileSync('./Data/products.json', 'utf-8'))
 let productListHtml = fs.readFileSync('./Template/product-list.html', "utf-8")
 let productDetailHtml = fs.readFileSync('./Template/product-details.html', 'utf-8')
 
-function replaceHtml(template, product){
-    let output = template.replace('{{%IMAGE%}}', product.productImage)
-    output = output.replace('{{%NAME%}}', product.name)
-    output = output.replace('{{%MODELNAME%}}', product.modeName)
-    output = output.replace('{{%MODELNO%}}', product.modelNumber)
-    output = output.replace('{{%SIZE%}}', product.size)
-    output = output.replace('{{%CAMERA%}}', product.camera)
-    output = output.replace('{{%PRICE%}}', product.price)
-    output = output.replace('{{%COLOR%}}', product.color)
-    output = output.replace('{{%ID%}}', product.id)
-    output = output.replace('{{%ROM%}}', product.ROM)
-    output = output.replace ("{{%DESC%}}", product.Description)
-    return output
-}
+//function replaceHtml(template, product){
+  //  let output = template.replace('{{%IMAGE%}}', product.productImage)
+  //  output = output.replace('{{%NAME%}}', product.name)
+ //   output = output.replace('{{%MODELNAME%}}', product.modeName)
+   // output = output.replace('{{%MODELNO%}}', product.modelNumber)
+   // output = output.replace('{{%SIZE%}}', product.size)
+    //output = output.replace('{{%CAMERA%}}', product.camera)
+   // output = output.replace('{{%PRICE%}}', product.price)
+    //output = output.replace('{{%COLOR%}}', product.color)
+    //output = output.replace('{{%ID%}}', product.id)
+    //output = output.replace('{{%ROM%}}', product.ROM)
+    //output = output.replace ("{{%DESC%}}", product.Description)
+    //return output
+//}
 /// Step 1: Create A Server
 const server = http.createServer((request, response) => {
     let {query, pathname: path} = url.parse(request.url, true)
