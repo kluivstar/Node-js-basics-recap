@@ -2,6 +2,11 @@ const readline = require("readline")
 const fs = require("fs")
 const http = require('http')
 const url = require("url")
+
+const events = require('events')
+
+//USER DEFINE MODULES
+const user = require('./Modules/user')
 const replaceHtml = require('./Modules/replaceHtml')
 /*
 Lecture 4:
@@ -114,6 +119,9 @@ const server = http.createServer((request, response) => {
     
     //console.log(response)
 }) */
+/**********
+UNDERSTANDING EVENT DRIVEN ARCHITECTURE
+***********/
 
 const server = http.createServer()
 server.on('request', (request, response)=>{
@@ -156,3 +164,18 @@ server.on('request', (request, response)=>{
 server.listen(8000, '127.0.0.1', () => {
     console.log("Server wanna be startin something....")
 }) 
+
+/***************
+EMITTING & HANDLING CUSTOM EVENTS
+****************/
+
+let myEmitter = new user()
+
+myEmitter.on('userCreated', (id, name)=>{
+    console.log(`A new user ${name} with ID ${id} is created`)
+})
+
+myEmitter.on('userCreated', (id, name)=>{
+    console.log(`A new user ${name} with ID ${id} is added to database`)
+})
+myEmitter.emit('userCreated', '001', "John")
