@@ -122,8 +122,9 @@ const server = http.createServer((request, response) => {
 /**********
 UNDERSTANDING EVENT DRIVEN ARCHITECTURE
 ***********/
-
 const server = http.createServer()
+/***************
+
 server.on('request', (request, response)=>{
     let {query, pathname: path} = url.parse(request.url, true)
     if (path === '/' || path === '/home'){
@@ -147,7 +148,6 @@ server.on('request', (request, response)=>{
             let productResponseHtml = html.replace('{{%CONTENT%}}', productHtmlArray.join(','))
         response.writeHead(200, {'Content-Type': 'text/html'})
         response.end(productResponseHtml)
-        //console.log(productHtmlArray.join(','))
         // response for when single product is clicked
         } else {
             let prod = products[query.id]
@@ -160,6 +160,7 @@ server.on('request', (request, response)=>{
         response.end(html.replace('{{%CONTENT%}}', '404: E no dey.'))
     }
 })
+*****/
 // Step 2: Start the server
 server.listen(8000, '127.0.0.1', () => {
     console.log("Server wanna be startin something....")
@@ -167,7 +168,7 @@ server.listen(8000, '127.0.0.1', () => {
 
 /***************
 EMITTING & HANDLING CUSTOM EVENTS
-****************/
+
 
 let myEmitter = new user()
 
@@ -179,3 +180,17 @@ myEmitter.on('userCreated', (id, name)=>{
     console.log(`A new user ${name} with ID ${id} is added to database`)
 })
 myEmitter.emit('userCreated', '001', "John")
+****************/
+// Listening to the server request event
+server.on('request', (req, res)=>{
+    let rs = fs.createReadStream('./Files/large-file.txt')
+    rs.on('data', (chunk)=>{
+        res.write(chunk)
+    })
+    rs.on('end', ()=>{
+        res.end()
+    })
+    rs.on('error', (error)=>{
+        res.end(error.message)
+    })
+})
