@@ -181,6 +181,19 @@ myEmitter.on('userCreated', (id, name)=>{
 })
 myEmitter.emit('userCreated', '001', "John")
 ****************/
+/***************
+ * Understanding Stream in Practice
+ * Solution 1: With Readable Stream
+   server.on('request', (req, res)=>{
+        fs.readFile('./Files/large-file.txt', (err, data)=>{
+            if(err){
+                res.end('Error, something doing down')
+            }
+                res.end(data)
+        })
+    })
+
+// Solution 2
 // Listening to the server request event
 server.on('request', (req, res)=>{
     let rs = fs.createReadStream('./Files/large-file.txt')
@@ -194,3 +207,9 @@ server.on('request', (req, res)=>{
         res.end(error.message)
     })
 })
+     * ****************/
+    // Solution 3: Using Pipe Method
+    server.on('request', (req, res) =>{
+        let rs = fs.createReadStream('./Files/large-file.txt')
+        rs.pipe(res)
+    })
