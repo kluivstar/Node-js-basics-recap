@@ -207,9 +207,24 @@ server.on('request', (req, res)=>{
         res.end(error.message)
     })
 })
-     * ****************/
+  
     // Solution 3: Using Pipe Method
     server.on('request', (req, res) =>{
         let rs = fs.createReadStream('./Files/large-file.txt')
         rs.pipe(res)
     })
+    * ****************/
+    console.log("Program wanna be startin something")
+
+    setTimeout(() => {
+        console.log('Timer has started')
+    }, 0)
+
+    fs.readFile('./Files/input.txt', ()=>{
+        console.log('File read done')
+    })
+    setImmediate(() => {
+        console.log('SetImmediate callback running')
+    })
+
+    console.log('Programs done startin something.')
