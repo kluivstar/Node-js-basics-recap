@@ -1,1 +1,0 @@
-This is a sample text that is going to be read with Node JS.
